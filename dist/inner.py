@@ -6,6 +6,7 @@ from copy import deepcopy
 import networkx as nx
 import sys
 
+filestrings = []
 
 def generateLap(x):
     for i in range(0,len(x)):
@@ -103,13 +104,16 @@ scaled = scale(fileadj)
 scaled = np.array(scaled)
 lap = generateLap(scaled)
 
+
 string = str(0)+","+str(getConn(lap))+",n/a"
 print(string)
+filestrings.append(string)
 
 
 for i in range(1,k+1):
     lap,added = addEdge(lap)
     string = str(i)+","+str(getConn(lap))+","+added
+    filestrings.append(string)
     print(string)
     sys.stdout.flush()
 
@@ -146,3 +150,7 @@ nx.draw(G,with_labels=True,node_color=colormap)
 plt.savefig(os.path.join(__location__,'out.png'))
 print("done")
 sys.stdout.flush()
+with open('pyout.txt','w') as f:
+    for x in filestrings:
+        f.write(x+"\n")
+    f.close()
